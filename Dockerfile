@@ -27,5 +27,8 @@ COPY --from=builder /app/server .
 
 EXPOSE 8000
 
+# Mount data and certificate directories
+VOLUME ["${APP_DATA_DIR}"]
+
 # Run unmodifiable binary with gathered local server
 ENTRYPOINT ["./server", "-c", "/app/data/config.json"]

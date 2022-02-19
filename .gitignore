@@ -16,3 +16,6 @@
 
 # IDE related files
 .idea/
+
+# Database files
+run/db/

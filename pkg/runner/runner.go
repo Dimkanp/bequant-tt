@@ -3,7 +3,7 @@ package runner
 import (
 	"sync"
 
-	"github.com/QuestsInc/errs"
+	"github.com/zeebo/errs"
 )
 
 type Runner interface {

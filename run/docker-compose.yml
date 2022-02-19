@@ -1,0 +1,34 @@
+version: '3.5'
+
+services:
+  database:
+    container_name: db
+    restart: unless-stopped
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - local_network
+
+  app:
+    container_name: app
+    restart: unless-stopped
+    image: cryptocompare:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - database
+    networks:
+      - local_network
+
+networks:
+  local_network:
+    name: cryptocompare.network
+    driver: bridge

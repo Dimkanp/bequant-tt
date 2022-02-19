@@ -1,0 +1,18 @@
+{
+  "RestAPI": {
+    "Address": ":8000"
+  },
+  "DB": {
+    "UserName": "user",
+    "Password": "password",
+    "Host": "database",
+    "Port": 5432,
+    "DBName": "user",
+    "SSL":"?sslmode=disable"
+  },
+  "Services": {
+    "Scheduler": {
+      "RefreshTime": 60
+    }
+  }
+}

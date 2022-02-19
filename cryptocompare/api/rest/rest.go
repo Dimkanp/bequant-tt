@@ -46,10 +46,10 @@ func New(service *service.Service, config *Config) *Rest {
 
 	api := mux.NewRouter()
 
+	// Simple handler
+	api.HandleFunc("/price", rest.priceHandler).Methods("GET")
 	// Websocket
 	api.HandleFunc("/ws", rest.websocketHandler)
-	// Simple handler
-	api.HandleFunc("/price", rest.websocketHandler)
 
 	rest.mux = api
 
