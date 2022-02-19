@@ -1,0 +1,17 @@
+model pair (
+    key id
+    field id text
+    field fsym text
+    field tsym text
+    field created timestamp ( autoupdate )
+    field raw text
+    field display text
+)
+
+create pair ()
+read one (
+    select pair
+    where pair.fsym = ?
+    where pair.tsym = ?
+    orderby desc pair.created
+)
