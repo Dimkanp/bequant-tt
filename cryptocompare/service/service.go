@@ -1,25 +1,55 @@
 package service
 
 import (
+	"context"
+
 	"bequant-tt/core"
+	"bequant-tt/cryptocompare/repository"
 )
 
 type Service struct {
+	App       AppService
+	Scheduler SchedulerService
+	Syncer    SyncerService
 }
 
-func New() *Service {
-	return &Service{}
+type ServicesConfig struct {
+	Scheduler *SchedulerConfig
 }
 
-type App interface {
-	Get(f, t []string) (*core.Pairs, error)
+type Config struct {
+	Repository repository.Repository
+	Services   *ServicesConfig
 }
 
-type Scheduler interface {
-	Start()
+func New(cfg *Config) *Service {
+	s := &Service{}
+
+	s.App = newAppService(cfg.Repository, s)
+	s.Scheduler = newSchedulerService(cfg.Repository, s, cfg.Services.Scheduler)
+	s.Syncer = newSyncerService(cfg.Repository, s)
+
+	return s
 }
 
-type Syncer interface {
-	UpdateData() error
-	Get(f, t []string) (*core.Pairs, error)
+func (s *Service) Run() error {
+	return s.Scheduler.Start()
+}
+
+func (s *Service) Stop() error {
+	return s.Scheduler.Stop()
+}
+
+type AppService interface {
+	Get(ctx context.Context, f, t []string) ([]*core.Compare, error)
+}
+
+type SchedulerService interface {
+	Start() error
+	Stop() error
+}
+
+type SyncerService interface {
+	UpdateData(ctx context.Context) error
+	Get(ctx context.Context, f, t []string) ([]*core.Compare, error)
 }
